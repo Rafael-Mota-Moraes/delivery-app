@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./styles.module.css";
+import SearchIcon from "./searchIcon.svg";
 
 type Props = {
   mainColor: string;
@@ -21,10 +22,9 @@ const SearchInput = ({ mainColor, onSearch }: Props) => {
       className={styles.container}
       style={{ borderColor: focused ? mainColor : "" }}
     >
-      <div
-        className={styles.button}
-        onClick={() => onSearch(searchValue)}
-      ></div>
+      <div className={styles.button} onClick={() => onSearch(searchValue)}>
+        <SearchIcon color={mainColor} />
+      </div>
       <input
         type="text"
         className={styles.input}
