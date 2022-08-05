@@ -1,20 +1,21 @@
 import Link from "next/link";
+import { useAppContext } from "../../contexts/AppContext";
 import { Product } from "../../types/Product";
 import styles from "./styles.module.css";
 
 type Props = {
   data: Product;
-  maincolor: string;
-  secondColor: string;
 };
 
-const ProductItem = ({ data, maincolor, secondColor }: Props) => {
+const ProductItem = ({ data }: Props) => {
+  const { tenant } = useAppContext();
+
   return (
-    <Link href={`/b7burguer/product/${data.id}`}>
+    <Link href={`/${tenant?.slug}/product/${data.id}`}>
       <a className={styles.container}>
         <div
           className={styles.head}
-          style={{ backgroundColor: secondColor }}
+          style={{ backgroundColor: tenant?.secondColor }}
         ></div>
         <div className={styles.info}>
           <div className={styles.img}>
@@ -22,7 +23,7 @@ const ProductItem = ({ data, maincolor, secondColor }: Props) => {
           </div>
           <div className={styles.catName}>{data.categoryName}</div>
           <div className={styles.name}>{data.name}</div>
-          <div className={styles.price} style={{ color: maincolor }}>
+          <div className={styles.price} style={{ color: tenant?.mainColor }}>
             {data.price}
           </div>
         </div>
