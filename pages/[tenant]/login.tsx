@@ -1,14 +1,18 @@
 import styles from "../../styles/Login.module.css";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "../../contexts/AppContext";
 import { useApi } from "../../libs/useApi";
 import { Tenant } from "../../types/Tenant";
 import Header from "../../components/Header";
+import InputField from "../../components/InputField";
 
 const Login = (data: Props) => {
   const { tenant, setTenant } = useAppContext();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     setTenant(data.tenant);
@@ -20,6 +24,19 @@ const Login = (data: Props) => {
         <title>Login</title>
       </Head>
       <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}`} />
+      <InputField
+        color={data.tenant.mainColor}
+        placeholder="Digite seu e-mail"
+        value={email}
+        onChange={setEmail}
+      />
+      <InputField
+        color={data.tenant.mainColor}
+        placeholder="Digite sua senha"
+        value={password}
+        onChange={setPassword}
+        password
+      />
     </div>
   );
 };
