@@ -24,7 +24,7 @@ const ProductItem = ({ data }: Props) => {
           <div className={styles.catName}>{data.categoryName}</div>
           <div className={styles.name}>{data.name}</div>
           <div className={styles.price} style={{ color: tenant?.mainColor }}>
-            {data.price}
+            R${data.price.toFixed(2)}
           </div>
         </div>
       </a>
