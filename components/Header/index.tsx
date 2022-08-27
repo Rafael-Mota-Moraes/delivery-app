@@ -31,7 +31,7 @@ const Header = ({ backHref, color, subtitle, title, invert }: Props) => {
         )}
         {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
       </div>
-      <div className={styles.rightSide}>...</div>
+      <div className={styles.rightSide}></div>
     </div>
   );
 };

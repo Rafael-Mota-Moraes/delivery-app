@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
 import ProductItem from "../../components/ProductItem";
 import SearchInput from "../../components/SearchInput";
+import { Sidebar } from "../../components/Sidebar";
 import { useAppContext } from "../../contexts/app";
 import { useAuthContext } from "../../contexts/auth";
 import { useApi } from "../../libs/useApi";
@@ -12,6 +13,7 @@ import { Tenant } from "../../types/Tenant";
 
 const Home = (data: Props) => {
   const [products, setProducts] = useState<Product[]>(data.products);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const { tenant, setTenant } = useAppContext();
   const { token, setToken } = useAuthContext();
@@ -33,7 +35,10 @@ const Home = (data: Props) => {
             <div className={styles.headerSubtitle}>O que deseja pra hoje?</div>
           </div>
           <div className={styles.headerTopRight}>
-            <div className={styles.menuButton}>
+            <div
+              className={styles.menuButton}
+              onClick={() => setSidebarOpen(true)}
+            >
               <div
                 className={styles.menuButtonLine}
                 style={{ backgroundColor: tenant?.mainColor }}
@@ -47,6 +52,11 @@ const Home = (data: Props) => {
                 style={{ backgroundColor: tenant?.mainColor }}
               ></div>
             </div>
+            <Sidebar
+              tenant={data.tenant}
+              onClose={() => setSidebarOpen(false)}
+              open={sidebarOpen}
+            />
           </div>
         </div>
         <div className={styles.headerBottom}>
@@ -77,8 +87,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // Get Tenant
   const tenant = await api.getTenant();
-
-  console.log("Tenant", tenant);
 
   if (!tenant) {
     return {
