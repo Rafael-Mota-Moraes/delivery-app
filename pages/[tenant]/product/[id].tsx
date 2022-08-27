@@ -7,7 +7,7 @@ import Header from "../../../components/Header";
 import ProductItem from "../../../components/ProductItem";
 import Quantity from "../../../components/Quantity";
 import SearchInput from "../../../components/SearchInput";
-import { useAppContext } from "../../../contexts/AppContext";
+import { useAppContext } from "../../../contexts/app";
 import { useApi } from "../../../libs/useApi";
 import { useFormatter } from "../../../libs/useFormatter";
 import styles from "../../../styles/Product-id.module.css";

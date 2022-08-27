@@ -2,7 +2,7 @@ import styles from "../../styles/ForgetSuccess.module.css";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useAppContext } from "../../contexts/AppContext";
+import { useAppContext } from "../../contexts/app";
 import { useApi } from "../../libs/useApi";
 import { Tenant } from "../../types/Tenant";
 import Header from "../../components/Header";
@@ -76,10 +76,10 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { tenant: tenantSlug } = context.query;
 
-  const api = useApi();
+  const api = useApi(tenantSlug as string);
 
   // Get Tenant
-  const tenant = await api.getTenant(tenantSlug as string);
+  const tenant = await api.getTenant();
   if (!tenant) {
     return {
       redirect: {
