@@ -4,6 +4,7 @@ import Banner from "../../components/Banner";
 import ProductItem from "../../components/ProductItem";
 import SearchInput from "../../components/SearchInput";
 import { useAppContext } from "../../contexts/app";
+import { useAuthContext } from "../../contexts/auth";
 import { useApi } from "../../libs/useApi";
 import styles from "../../styles/Home.module.css";
 import { Product } from "../../types/Product";
@@ -13,6 +14,7 @@ const Home = (data: Props) => {
   const [products, setProducts] = useState<Product[]>(data.products);
 
   const { tenant, setTenant } = useAppContext();
+  const { token, setToken } = useAuthContext();
 
   useEffect(() => {
     setTenant(data.tenant);
