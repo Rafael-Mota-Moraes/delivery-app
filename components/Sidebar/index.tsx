@@ -26,7 +26,7 @@ export const Sidebar = ({ tenant, open, onClose }: Props) => {
           >
             {user && (
               <div className={styles.userInfo}>
-                <strong>{`user.name`}</strong>
+                <strong>{user.name}</strong>
                 Último pedido há X semanas
               </div>
             )}

@@ -1,3 +1,4 @@
+import { getCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
@@ -10,16 +11,22 @@ import { useApi } from "../../libs/useApi";
 import styles from "../../styles/Home.module.css";
 import { Product } from "../../types/Product";
 import { Tenant } from "../../types/Tenant";
+import { User } from "../../types/User";
 
 const Home = (data: Props) => {
   const [products, setProducts] = useState<Product[]>(data.products);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const { tenant, setTenant } = useAppContext();
-  const { token, setToken } = useAuthContext();
+  const { setToken, setUser } = useAuthContext();
 
   useEffect(() => {
     setTenant(data.tenant);
+    setToken(data.token);
+
+    if (data.user) {
+      setUser(data.user);
+    }
   }, []);
 
   const handleSearch = (searchValue: string) => {
@@ -78,6 +85,8 @@ export default Home;
 type Props = {
   tenant: Tenant;
   products: Product[];
+  token: string;
+  user: User | null;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -87,6 +96,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // Get Tenant
   const tenant = await api.getTenant();
+
+  // Get Logged User
+
+  const token = getCookie("token", context);
+
+  const user = await api.authorizeToken(token as string);
 
   if (!tenant) {
     return {
@@ -104,7 +119,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       tenant,
-      products: products
+      products: products,
+      user,
+      token
     }
   };
 };

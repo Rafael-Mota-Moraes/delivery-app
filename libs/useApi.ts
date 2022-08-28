@@ -1,5 +1,6 @@
 import { Product } from "../types/Product";
 import { Tenant } from "../types/Tenant";
+import { User } from "../types/User";
 
 const TEMP_PRODUCT: Product = {
   id: 1,
@@ -48,5 +49,16 @@ export const useApi = (tenantSlug: string) => ({
 
   getProduct: async (id: string) => {
     return TEMP_PRODUCT;
+  },
+
+  authorizeToken: async (token: string): Promise<User | false> => {
+    if (!token) {
+      return false;
+    }
+
+    return {
+      name: "Rafael",
+      email: "rafaelmota622@gmail.com"
+    };
   }
 });
