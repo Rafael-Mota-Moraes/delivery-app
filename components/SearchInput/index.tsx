@@ -14,15 +14,15 @@ const SearchInput = ({ onSearch }: Props) => {
   const [searchValue, setSearchValue] = useState("");
 
   const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.code === "Enter") {
-      onSearch(searchValue);
-    }
+    // if (event.code === "Enter") {
+    onSearch(searchValue);
+    // }
   };
 
   return (
     <div
       className={styles.container}
-      style={{ borderColor: focused ? tenant?.mainColor : "" }}
+      style={{ borderColor: tenant?.mainColor }}
     >
       <div className={styles.button} onClick={() => onSearch(searchValue)}>
         <SearchIcon color={tenant?.mainColor} />

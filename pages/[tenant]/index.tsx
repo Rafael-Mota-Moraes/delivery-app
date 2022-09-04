@@ -12,9 +12,10 @@ import styles from "../../styles/Home.module.css";
 import { Product } from "../../types/Product";
 import { Tenant } from "../../types/Tenant";
 import { User } from "../../types/User";
+import NoItemsIcon from "../../public/assets/noItems.svg";
 
 const Home = (data: Props) => {
-  const [products, setProducts] = useState<Product[]>(data.products);
+  const [products, setProducts] = useState<Product[] | null>(data.products);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const { tenant, setTenant } = useAppContext();
@@ -29,9 +30,23 @@ const Home = (data: Props) => {
     }
   }, []);
 
-  const handleSearch = (searchValue: string) => {
-    console.log("Você está buscando por:", searchValue);
+  // Search
+  const [filteredProducts, setFilteredProducts] = useState<Product[] | null>();
+  const [searchText, setSearchText] = useState<string>("");
+  const handleSearch = (value: string) => {
+    setSearchText(value);
   };
+
+  useEffect(() => {
+    let newFilteredProducts: Product[] = [];
+
+    for (let product of data.products) {
+      if (product.name.toLowerCase().indexOf(searchText?.toLowerCase()) > -1) {
+        newFilteredProducts.push(product);
+      }
+    }
+    setFilteredProducts(newFilteredProducts);
+  }, [searchText]);
 
   return (
     <div className={styles.container}>
@@ -70,12 +85,43 @@ const Home = (data: Props) => {
           <SearchInput onSearch={handleSearch} />
         </div>
       </header>
-      <Banner />
-      <div className={styles.grid}>
-        {products.map((item, index) => (
-          <ProductItem key={index} data={item} />
-        ))}
-      </div>
+
+      {searchText && (
+        <>
+          <div className={styles.searchText}>
+            Procurando por: <strong>{searchText}</strong>
+          </div>
+
+          {filteredProducts && filteredProducts.length > 0 && (
+            <div className={styles.grid}>
+              {filteredProducts.map((item, index) => (
+                <ProductItem key={index} data={item} />
+              ))}
+            </div>
+          )}
+
+          {filteredProducts && filteredProducts.length === 0 && (
+            <div className={styles.noProducts}>
+              <NoItemsIcon color="#e0e0e0" />
+              <div className={styles.noProductsText}>
+                Ops! Não há itens com este nome
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {!searchText && (
+        <>
+          <Banner />
+          <div className={styles.grid}>
+            {products &&
+              products.map((item, index) => (
+                <ProductItem key={index} data={item} />
+              ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -119,7 +165,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       tenant,
-      products: products,
+      products,
       user,
       token
     }
